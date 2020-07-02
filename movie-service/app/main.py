@@ -1,6 +1,6 @@
 from fastapi import FastAPI, BackgroundTasks
 
-from worker.celery_app import celery_app
+from app.worker.celery_app import celery_app
 
 app = FastAPI()
 
