@@ -1,4 +1,4 @@
-version: "2"
+version: "2.4"
 
 services:
   rabbitmq:
@@ -39,9 +39,6 @@ services:
       - ./fastseo/:/app/
     ports:
       - 8001:8000
-    environment:
-      - DATAFORSEO_LOGIN=123analyticsacc@gmail.com
-      - DATAFORSEO_PASSWORD=XdlFY3OvrsLzVuSI
   celery_worker:
     build: ./fastseo
     command: celery worker -A worker.celery_worker -l info -Q test-queue -c 1
