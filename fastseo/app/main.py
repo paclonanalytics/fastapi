@@ -2,7 +2,7 @@ import sys
 
 from fastapi import FastAPI, BackgroundTasks
 from fastapi.encoders import jsonable_encoder
-from typing import List
+from typing import List, Optional
 from app.schemas import Searhvolume
 
 from app.worker.celery_app import celery_app
@@ -18,6 +18,10 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
+@app.get("/pingback")
+def pingback(id: Optional[str] = None, tag: Optional[str] = None):
+    print("id:::", id, "tag:::", tag)
+    return {"id": id, "tag:":tag}
 
 def celery_on_message(body):
     if body.get('status') == 'PROGRESS':

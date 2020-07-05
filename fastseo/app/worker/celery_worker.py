@@ -21,7 +21,8 @@ def searhvolume_celery(items):
         post_data[len(post_data)] = dict(
             location_name=items["country_name"],
             language_name=items["language_name"],
-            keywords=keys_list
+            keywords=keys_list,
+            pingback_url="https://fastseo.paclonanalytics.com/pingback?id=$id&tag=$tag"
         )
         response = seoclient.post("/v3/keywords_data/google/search_volume/task_post", post_data)
         if response["status_code"] == 20000:

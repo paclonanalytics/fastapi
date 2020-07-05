@@ -34,11 +34,12 @@ services:
       - "5555:5555"
   fastseo:
     build: ./fastseo
-    command: bash -c "uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
+    command: "uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
+    container_name: fastseo
     volumes:
       - ./fastseo/:/app/
     ports:
-      - 8001:8000
+      - 8000:8000
   celery_worker:
     build: ./fastseo
     command: celery worker -A worker.celery_worker -l info -Q test-queue -c 1
