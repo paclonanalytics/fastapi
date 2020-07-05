@@ -1,4 +1,6 @@
 fastapi
 uvicorn
 celery
+typing
 redis
+python-dotenv==0.12.0

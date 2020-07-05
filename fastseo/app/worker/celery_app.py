@@ -1,4 +1,6 @@
 from celery import Celery
+from celery.schedules import crontab
+
 
 celery_app = Celery(
     "worker",
@@ -7,5 +9,8 @@ celery_app = Celery(
 )
 
 celery_app.conf.task_routes = {
-    "worker.celery_worker.test_celery": "test-queue"}
-celery_app.conf.update(task_track_started=True)
+    "worker.celery_worker.test_celery": "test-queue",
+    "worker.celery_worker.searhvolume_celery": "test-queue"
+    }
+
+celery_app.conf.update(task_track_started=True, enable_utc=True, timezone='Europe/London')

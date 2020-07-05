@@ -10,7 +10,6 @@ services:
       - "15672:15672"
     volumes:
       - "rabbitmq_data:/bitnami"
-
   redis:
     image: "bitnami/redis:5.0.4"
     environment:
@@ -19,7 +18,6 @@ services:
       - "6379:6379"
     volumes:
       - "redis_data:/bitnami/redis/data"
-
   celery-flower:
     image: gregsi/latest-celery-flower-docker:latest
     environment:
@@ -35,19 +33,24 @@ services:
     ports:
       - "5555:5555"
   fastseo:
-    build: ./movie-service
+    build: ./fastseo
     command: bash -c "uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
     volumes:
-      - ./movie-service/:/app/
+      - ./fastseo/:/app/
     ports:
       - 8001:8000
+    environment:
+      - DATAFORSEO_LOGIN=123analyticsacc@gmail.com
+      - DATAFORSEO_PASSWORD=XdlFY3OvrsLzVuSI
   celery_worker:
-    build: ./movie-service
+    build: ./fastseo
     command: celery worker -A worker.celery_worker -l info -Q test-queue -c 1
     volumes:
-      - ./movie-service/app/:/app/
+      - ./fastseo/app/:/app/
     restart: on-failure
-
+    environment:
+      - timezone=Europe/London
+    
 volumes:
   rabbitmq_data:
     driver: local
