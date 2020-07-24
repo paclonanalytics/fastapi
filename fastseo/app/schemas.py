@@ -1,15 +1,12 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 from datetime import date
-
-
+import uuid
 
 class Searhvolume(BaseModel):
-    userid: int
-    projectid: int
-    taskid: int
+    ext_taskid: str = uuid.uuid1()
     date: date
-    country_name: str
-    language_name: str
-    keywords: List
+    country_name: str = 'United States'
+    language_name: str = 'English'
+    keywords: List[str] = ['English', "New Yourk"]

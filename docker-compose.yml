@@ -34,12 +34,12 @@ services:
       - "5555:5555"
   fastseo:
     build: ./fastseo
-    command: "uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
+    command: "uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 80"
     container_name: fastseo
     volumes:
       - ./fastseo/:/app/
     ports:
-      - 8000:8000
+      - 80:80
   celery_worker:
     build: ./fastseo
     command: celery worker -A worker.celery_worker -l info -Q test-queue -c 1
@@ -48,10 +48,25 @@ services:
     restart: on-failure
     environment:
       - timezone=Europe/London
-    
+  # beat:
+  #   container_name: beat
+  #   restart: unless-stopped
+  #   build: ./fastseo
+  #   command: ["celery", "beat", "-A", "worker.celery_worker",
+  #             "-S", "redisbeat.RedisScheduler", "-l", "INFO"]
+  #   volumes:
+  #     - ./fastseo/app/:/app/
+  #   depends_on:
+  #     - celery_worker
+  #     - redis
+  clickhouse:
+    image: yandex/clickhouse-server
+    container_name: clickhouse
+    hostname: clickhouse
+    ports:
+      - 8123:8123
 volumes:
   rabbitmq_data:
     driver: local
   redis_data:
     driver: local
-

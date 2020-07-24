@@ -3,4 +3,8 @@ uvicorn
 celery
 typing
 redis
+redisbeat
+amqp
+billiard
+clickhouse-driver
 python-dotenv==0.12.0
